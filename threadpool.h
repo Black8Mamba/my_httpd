@@ -21,7 +21,7 @@ typedef struct tk_task {
 
 typedef struct threadpool {
     pthread_mutex_t mutex;
-    pthread_cont_t cond;
+    pthread_cond_t cond;
     pthread_t *threads; //线程数组
     tk_task_t *head;
     int thread_count;
@@ -39,8 +39,8 @@ typedef enum{
 }tk_threadpool_error_t;
 
 typedef enum {
-    immediate_shutdown = 1;
-    graceful_shutdown = 2;
+    immediate_shutdown = 1,
+    graceful_shutdown = 2,
 }tk_threadpool_sd_t;
 
 tk_threadpool_t* threadpool_init(int thread_num);

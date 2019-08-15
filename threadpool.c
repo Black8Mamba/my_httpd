@@ -15,7 +15,7 @@ int threadpool_free(tk_threadpool_t *pool)
     if (pool == NULL || pool->started > 0)
         return -1; //有在运行的线程
 
-    if (pool->thread)
+    if (pool->threads)
         free(pool->threads); //释放线程数组
 
     tk_task_t *old;
@@ -69,7 +69,7 @@ void *threadpool_worker(void *arg)
         }
 
         pool->started--;
-        pthread_mutex_unlock(&(pool->lock));
+        pthread_mutex_unlock(&(pool->mutex));
         pthread_exit(NULL);
         return NULL;
 }
@@ -149,7 +149,7 @@ tk_threadpool_t *threadpool_init(int thread_num)
 
     for (int i = 0; i < thread_num; ++i) {
         if (pthread_create(&(pool->threads[i]), NULL, 
-            threadpoll_worker, (void*)pool) != 0) {
+            threadpool_worker, (void*)pool) != 0) {
                 threadpool_destroy(pool, 0);
                 return NULL;
             }
