@@ -10,10 +10,9 @@
 
 int compare(void* pi, void* pj)
 {
-    if (*(int*)pi > *(int*)pj)
-        return 1;
-    else
-        return 0;  
+    int *i = (int*)pi;
+    int *j = (int*)pj;
+    return (*i < *j) ? 1 : 0;
 }
 
 int main(void)
@@ -21,18 +20,23 @@ int main(void)
     tk_pq_t pq;
     tk_pq_init(&pq, compare, 10);
     printf("empty: %d\n", tk_pq_is_empty(&pq));
-    printf("size: %d\n", tk_pq_size(&pq));
-    char buf[] = {1,2,3,4,5,6,7,8,9,10};
-    for (int i = 0; i < 10; ++i)
-        tk_pq_insert(&pq, (void*)&buf[i]);
+    printf("size: %lud\n", tk_pq_size(&pq));
+
+    int buf[] = {1,2,3,4,5,6,7,8,9,10};
+
+    for (int i = 0; i < 10; ++i) {
+        tk_pq_insert(&pq, &buf[i]);
+    }
+
     printf("empty: %d\n", tk_pq_is_empty(&pq));
-    printf("size: %d\n", tk_pq_size(&pq));
+    printf("size: %lud\n", tk_pq_size(&pq));
     while(!tk_pq_is_empty(&pq)) {
+
         printf("%d\n", *(int*)tk_pq_min(&pq));
         tk_pq_delmin(&pq);
     }
     printf("empty: %d\n", tk_pq_is_empty(&pq));
-    printf("size: %d\n", tk_pq_size(&pq));
+    printf("size: %lud\n", tk_pq_size(&pq));
         
     return 0;
 }
