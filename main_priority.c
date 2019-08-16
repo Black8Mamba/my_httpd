@@ -22,6 +22,17 @@ int main(void)
     tk_pq_init(&pq, compare, 10);
     printf("empty: %d\n", tk_pq_is_empty(&pq));
     printf("size: %d\n", tk_pq_size(&pq));
-    
+    char buf[] = {1,2,3,4,5,6,7,8,9,10};
+    for (int i = 0; i < 10; ++i)
+        tk_pq_insert(&pq, (void*)&buf[i]);
+    printf("empty: %d\n", tk_pq_is_empty(&pq));
+    printf("size: %d\n", tk_pq_size(&pq));
+    while(!tk_pq_is_empty(&pq)) {
+        printf("%d\n", *(int*)tk_pq_min(&pq));
+        tk_pq_delmin(&pq);
+    }
+    printf("empty: %d\n", tk_pq_is_empty(&pq));
+    printf("size: %d\n", tk_pq_size(&pq));
+        
     return 0;
 }
